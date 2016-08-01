@@ -4,9 +4,7 @@ TARGET_IP=${TARGET_IP:-127.0.0.1}
 TARGET_PORT=${TARGET_PORT:-8080}
 RUN_FOREVER=${RUN_FOREVER:-"false"}
 
-if [ -z "${DESTINATIONS}" ]; then
-  iptables -t nat -A OUTPUT -p tcp -j DNAT --to-destination ${TARGET_IP}:${TARGET_PORT}
-else
+if [ -n "${DESTINATIONS}" ]; then
   DESTINATIONS="${DESTINATIONS}" IFS=,
   for dest in $DESTINATIONS; do
     iptables -t nat -A OUTPUT -p tcp -d $dest -j DNAT --to-destination ${TARGET_IP}:${TARGET_PORT}
