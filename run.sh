@@ -12,9 +12,12 @@ if [ -n "${DESTINATIONS}" ]; then
 fi
 
 if [ -n "${CMD}" ]; then
-    EXEC_CMD="iptables $CMD"
-    echo "==> will executing: \"${EXEC_CMD}\""
-    eval "${EXEC_CMD}"
+  CMD="${CMD}" IFS=,
+  for c in $CMD; do
+    exec_cmd="iptables $c"
+    echo "==> will executing: \"${exec_cmd}\""
+    eval "${exec_cmd}"
+  done
 fi
 
 if [[ ${RUN_FOREVER} = "true" ]]; then
